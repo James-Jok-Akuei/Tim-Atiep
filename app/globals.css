@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/*
+ * Stage theme — taken from the TIM ATIEP book cover.
+ * Three source colours; every other shade is mixed only from them
+ * (the one exception, indigo-deep, darkens the indigo for shadows).
+ */
+@theme {
+  --color-indigo-base: #1b2b47;
+  --color-tree-red: #e53935;
+  --color-clean-white: #ffffff;
+
+  --color-indigo-raised: color-mix(in oklab, #1b2b47 90%, #ffffff);
+  --color-indigo-line: color-mix(in oklab, #1b2b47 80%, #ffffff);
+  --color-indigo-deep: color-mix(in oklab, #1b2b47 60%, #000000);
+
+  --color-tree-red-soft: color-mix(in oklab, #e53935 82%, #ffffff);
+  --color-tree-red-deep: color-mix(in oklab, #e53935 78%, #1b2b47);
+
+  --color-clean-white-muted: color-mix(in oklab, #ffffff 80%, #1b2b47);
+  --color-clean-white-faint: color-mix(in oklab, #ffffff 64%, #1b2b47);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /*
+   * Viewport-scaled display sizes: legible from the back of the hall.
+   * Each takes the smaller of a width- and height-based size, so 4:3,
+   * 16:10 and ultrawide projectors keep the same proportions as 16:9.
+   */
+  --text-stage-hero: clamp(4.5rem, min(11vw, 19.5vh), 14rem);
+  --text-stage-hero--line-height: 0.95;
+  --text-stage-title: clamp(3rem, min(6.5vw, 11.6vh), 8rem);
+  --text-stage-title--line-height: 1.05;
+  --text-stage-heading: clamp(2.25rem, min(4.2vw, 7.5vh), 5rem);
+  --text-stage-heading--line-height: 1.1;
+  --text-stage-lead: clamp(1.5rem, min(2.4vw, 4.3vh), 2.75rem);
+  --text-stage-lead--line-height: 1.3;
+  --text-stage-body: clamp(1.25rem, min(1.7vw, 3vh), 2rem);
+  --text-stage-body--line-height: 1.45;
+  --text-stage-label: clamp(0.875rem, min(1.1vw, 1.95vh), 1.25rem);
+  --text-stage-label--line-height: 1.2;
+  --text-stage-small: clamp(1rem, min(1.2vw, 2.15vh), 1.5rem);
+  --text-stage-small--line-height: 1.45;
+
+  --ease-stage: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-ken-burns: ken-burns 32s ease-in-out infinite alternate;
+  --animate-glow-breathe: glow-breathe 9s ease-in-out infinite;
+
+  @keyframes ken-burns {
+    from {
+      transform: scale(1) translate3d(0, 0, 0);
+    }
+    to {
+      transform: scale(1.06) translate3d(-1%, -0.8%, 0);
+    }
+  }
+
+  @keyframes glow-breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes particle-rise {
+    0% {
+      transform: translate3d(0, 0, 0);
+      opacity: 0;
+    }
+    12%,
+    85% {
+      opacity: var(--particle-opacity, 0.6);
+    }
+    100% {
+      transform: translate3d(var(--particle-drift, 0px), -115vh, 0);
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  /*
+   * Stage: above 1920×1080 the whole rem scale (type caps, controls, spacing)
+   * grows with the screen, so a 4K projector looks like 1080p, only sharper.
+   */
+  :root:has([data-stage-root]) {
+    font-size: max(100%, min(0.8333vw, 1.4815vh));
+  }
+
+  :root:has(.attendee-view) {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cover-texture;
+    color: var(--color-clean-white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-tree-red) 45%, transparent);
+    color: var(--color-clean-white);
+  }
+}
+
+/* Deep indigo ground with the cover's swirling wood-grain as a soft tiled watermark. */
+@utility bg-cover-texture {
+  background-color: var(--color-indigo-base);
+  background-image: url("/textures/wood-grain.svg");
+  background-repeat: repeat;
+  background-size: 36rem auto;
+}
+
+@layer utilities {
+  /* Warm red light pooling behind a slide; transparent so the texture shows through. */
+  .stage-glow {
+    background: radial-gradient(
+      ellipse 60% 50% at 50% 40%,
+      color-mix(in oklab, var(--color-tree-red) 13%, transparent),
+      transparent 70%
+    );
+  }
+
+  /* Critical headers: the cover's white, edged with a thin red outline. */
+  .text-cover-title {
+    color: var(--color-clean-white);
+    -webkit-text-stroke: 0.03em var(--color-tree-red);
+    paint-order: stroke fill;
+  }
+
+  /* Red accent text (prices, initials, highlighted phrases). */
+  .text-red-gradient {
+    /* drop-shadow, not text-shadow: text-shadow paints over clipped gradient text and muddies it. */
+    filter: drop-shadow(0 0 0.2em var(--color-indigo-base));
+    background: linear-gradient(
+      180deg,
+      var(--color-tree-red-soft),
+      var(--color-tree-red) 55%,
+      var(--color-tree-red-deep)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Drifting motes of light for ambient backgrounds (see AmbientParticles). */
+  .stage-particle {
+    position: absolute;
+    bottom: -2vh;
+    border-radius: 9999px;
+    background: radial-gradient(circle, var(--color-tree-red-soft), transparent 70%);
+    animation: particle-rise var(--particle-duration, 20s) linear var(--particle-delay, 0s) infinite;
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-particle {
+    display: none;
+  }
+
+  .animate-ken-burns,
+  .animate-glow-breathe {
+    animation: none;
+  }
+}
+
+@layer base {
+  /* Any red text sits on a soft indigo halo, keeping it legible over the red shade tree. */
+  [class*="text-tree-red"] {
+    text-shadow: 0 0 0.4em var(--color-indigo-base);
+  }
+}

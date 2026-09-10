@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- Swirling wood grain after the tree trunk on the TIM ATIEP cover. Seamless tile. -->
+  <filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.0045 0.0014" numOctaves="3" seed="11" stitchTiles="stitch"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0.898  0 0 0 0 0.224  0 0 0 0 0.208  3 0 0 0 -1"/>
+    <feComponentTransfer><feFuncA type="table" tableValues="0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0 0 0 0.35 1 0.35 0"/></feComponentTransfer>
+  </filter>
+  <rect width="600" height="600" filter="url(#grain)" opacity="0.09"/>
+</svg>
