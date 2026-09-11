@@ -154,7 +154,7 @@ export function PresentationContainer({
 
   return (
     <div data-stage-root className="bg-cover-texture fixed inset-0 overflow-hidden">
-      <audio ref={audioRef} src={ambientSrc} loop preload="auto" />
+      <audio ref={audioRef} src={ambientSrc} loop preload="none" />
 
       {/* Stays put while slides change, like the tree on the cover. */}
       <ShadeTree className="absolute inset-x-[4vw] bottom-0 top-[6vh]" showcaseReader={current.showcaseReader ?? false} />

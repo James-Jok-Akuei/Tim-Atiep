@@ -4,8 +4,8 @@ import { TreeDeciduous } from "lucide-react";
 import { book } from "@/data/presentationData";
 import { StageImage } from "./StageImage";
 
-/** The book cover, or a typographic stand-in until the cover file is added. */
-export function BookCover({ className = "" }: { className?: string }) {
+/** The book cover, or a typographic stand-in until the cover file is added. `eager` for above-the-fold use. */
+export function BookCover({ className = "", eager = false }: { className?: string; eager?: boolean }) {
   return (
     <div
       className={`relative aspect-[2/3] overflow-hidden rounded-md border border-tree-red/20 shadow-[0_30px_80px_-20px_var(--color-indigo-deep)] ${className}`}
@@ -15,6 +15,8 @@ export function BookCover({ className = "" }: { className?: string }) {
         alt={`Cover of ${book.fullTitle}`}
         fill
         sizes="(min-width: 768px) 30vw, 70vw"
+        loading={eager ? "eager" : undefined}
+        fetchPriority={eager ? "high" : undefined}
         quality={90}
         className="object-cover"
         fallback={<CoverFallback />}

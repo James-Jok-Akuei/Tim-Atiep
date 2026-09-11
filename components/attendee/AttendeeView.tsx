@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ProgrammeList } from "@/components/attendee/ProgrammeList";
 import { ScanPanel } from "@/components/attendee/ScanPanel";
 import { AmbientParticles } from "@/components/stage/AmbientParticles";
+import { AnimatedBook } from "@/components/ui/AnimatedBook";
 import { BookCover } from "@/components/ui/BookCover";
 import { FittedImage } from "@/components/ui/FittedImage";
 import { Eyebrow } from "@/components/ui/Eyebrow";
@@ -105,7 +106,7 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
             </a>
           </div>
         </div>
-        <BookCover className="hidden w-64 lg:block xl:w-72" />
+        <AnimatedBook eager className="hidden w-64 lg:block xl:w-72" />
         </div>
       </header>
 

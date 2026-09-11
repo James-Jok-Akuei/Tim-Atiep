@@ -70,6 +70,54 @@
     }
   }
 
+  --animate-book-float: book-float 6s ease-in-out infinite;
+  --animate-book-sway: book-sway 11s ease-in-out infinite;
+  --animate-book-shadow: book-shadow 6s ease-in-out infinite;
+
+  @keyframes book-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3.5%);
+    }
+  }
+
+  /* Turns gently on its stand, never far enough to hide the title. */
+  @keyframes book-sway {
+    0%,
+    100% {
+      transform: rotateY(-14deg) rotateX(3deg);
+    }
+    50% {
+      transform: rotateY(-4deg) rotateX(1deg);
+    }
+  }
+
+  /* Ground shadow tightens and fades as the book rises. */
+  @keyframes book-shadow {
+    0%,
+    100% {
+      transform: scaleX(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scaleX(0.82);
+      opacity: 0.45;
+    }
+  }
+
+  @keyframes book-sheen {
+    0% {
+      transform: translateX(-120%);
+    }
+    30%,
+    100% {
+      transform: translateX(120%);
+    }
+  }
+
   @keyframes particle-rise {
     0% {
       transform: translate3d(0, 0, 0);
@@ -182,5 +230,26 @@
   /* Any red text sits on a soft indigo halo, keeping it legible over the red shade tree. */
   [class*="text-tree-red"] {
     text-shadow: 0 0 0.4em var(--color-indigo-base);
+  }
+}
+
+@layer utilities {
+  /* A band of light that sweeps across the book cover every few seconds. */
+  .book-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / 0.22) 50%, transparent 65%);
+    transform: translateX(-120%);
+    animation: book-sheen 7s ease-in-out 1.5s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-book-float,
+  .animate-book-sway,
+  .animate-book-shadow,
+  .book-sheen::after {
+    animation: none;
   }
 }
