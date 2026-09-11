@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
-import { siteBuilder } from "@/data/presentationData";
+import { SITE_URL, siteBuilder } from "@/data/presentationData";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,6 +21,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "TIM ATIEP — The Tree of Shade · Book Launch",
   description:
     "Live presentation for the official launch of TIM ATIEP (The Tree of Shade), a poetry collection by Adut Loi Akok. University of Juba, Unipod Hall.",

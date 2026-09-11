@@ -205,6 +205,11 @@ export interface PresentationData {
   gallery: GalleryImage[];
 }
 
+// ─── Site address ─────────────────────────────────────────────────────────
+
+/** The live site. Event-guide QR codes always point here, even when the stage runs on localhost. */
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://tim-atiep.vercel.app";
+
 // ─── Site credit ──────────────────────────────────────────────────────────
 
 export const siteBuilder = {

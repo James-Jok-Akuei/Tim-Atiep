@@ -43,7 +43,7 @@ Stage type scale (viewport-scaled): `text-stage-hero`, `text-stage-title`, `text
 | `/stage` | Stage presentation, always — use this on the projector laptop. |
 | `/mobile` | Attendee guide: scrollable event overview for phones. |
 
-The welcome slide shows an **Event guide** QR code that opens `/mobile`. Set `NEXT_PUBLIC_SITE_URL` to the deployed address (e.g. `https://tim-atiep.vercel.app`) before building, otherwise the QR points at whatever address the stage laptop is using — and `localhost` is unreachable from phones (the slide warns when that's the case).
+The welcome slide and the guide's desktop side panel show an **Event guide** QR code that always opens the live guide at https://tim-atiep.vercel.app/mobile — even when the stage runs from a laptop on `localhost`. To point it at a different address, set `NEXT_PUBLIC_SITE_URL` before building (the default lives in `SITE_URL` in `data/presentationData.ts`).
 
 ## Screen sizes
 
