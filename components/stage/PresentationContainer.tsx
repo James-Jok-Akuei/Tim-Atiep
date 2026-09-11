@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { pad2 as pad } from "@/lib/format";
 import { ShadeTree } from "@/components/ui/ShadeTree";
+import { BuilderCredit } from "./BuilderCredit";
 import { shouldIgnoreKey } from "./keys";
 import { EASE_STAGE } from "./motion";
 import { PurchaseQrModal } from "./PurchaseQrModal";
@@ -174,6 +175,8 @@ export function PresentationContainer({
           {current.content}
         </motion.div>
       </AnimatePresence>
+
+      <BuilderCredit />
 
       {/* Slide picker */}
       <AnimatePresence>
