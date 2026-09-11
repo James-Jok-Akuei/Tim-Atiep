@@ -211,6 +211,8 @@ export const siteBuilder = {
   name: "James Jok Dut Akuei",
   role: "Software Engineer",
   email: "jokditakeerleek@gmail.com",
+  /** Where visitors can book a website-development consultation. */
+  website: "https://sudo-portfolios.com",
 };
 
 // ─── Event ────────────────────────────────────────────────────────────────

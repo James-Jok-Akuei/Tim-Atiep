@@ -472,6 +472,17 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
           </a>{" "}
           · {siteBuilder.role}
           <span className="block">{siteBuilder.email}</span>
+          <span className="mt-2 block">
+            Need a website?{" "}
+            <a
+              href={siteBuilder.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-tree-red-soft underline-offset-4 transition-colors hover:text-clean-white hover:underline"
+            >
+              Book a consultation at sudo-portfolios.com
+            </a>
+          </span>
         </p>
       </footer>
 
