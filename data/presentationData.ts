@@ -10,19 +10,25 @@
 // ─── Types ────────────────────────────────────────────────────────────────
 
 export type SpeakerRole =
-  | "moderator"
+  | "mc"
   | "author"
   | "speaker"
-  | "keynote"
+  | "guest-speaker"
+  | "poet"
+  | "panel-moderator"
+  | "special-guest"
   | "guest-of-honour"
   | "chief-guest"
   | "performer";
 
 export const SPEAKER_ROLE_LABEL: Record<SpeakerRole, string> = {
-  moderator: "Moderator",
+  mc: "Master of Ceremonies",
   author: "The Author",
   speaker: "Speaker",
-  keynote: "Keynote Speaker",
+  "guest-speaker": "Guest Speaker",
+  poet: "Poet",
+  "panel-moderator": "Panel Moderator",
+  "special-guest": "Special Guest",
   "guest-of-honour": "Guest of Honour",
   "chief-guest": "Chief Guest",
   performer: "Performance",
@@ -32,7 +38,8 @@ export interface Speaker {
   id: string;
   name: string;
   role: SpeakerRole;
-  avatar: string;
+  /** Portrait path; when absent the card shows the speaker's initials. */
+  avatar?: string;
   /** CSS object-position for the portrait crop, e.g. "center 25%". */
   avatarPosition?: string;
   title?: string;
@@ -54,7 +61,7 @@ export interface Stockist {
   name: string;
   location: string;
   phone: string;
-  /** Pre-formatted for display, e.g. "+211 929 996 503". */
+  /** Pre-formatted for display, e.g. "+211 924 643 175". */
   phoneDisplay: string;
   whatsapp: string;
 }
@@ -156,6 +163,18 @@ export interface Foreword {
   excerpt: BookQuote;
 }
 
+/** One line of the MC running programme. */
+export interface AgendaItem {
+  /** Juba time, 24-hour "HH:MM". */
+  start: string;
+  end: string;
+  title: string;
+  /** Who leads it — taken from the speaker list when `speakerId` is set. */
+  lead?: string;
+  speakerId?: string;
+  detail?: string;
+}
+
 export interface EventInfo {
   name: string;
   venue: string;
@@ -172,6 +191,7 @@ export interface PresentationData {
   author: Author;
   authorBooks: AuthorBook[];
   speakers: Speaker[];
+  agenda: AgendaItem[];
   milestones: Milestone[];
   endorsement: BookQuote;
   foreword: Foreword;
@@ -196,15 +216,16 @@ export const invitation = {
   image: "/images/speakers/img13.jpeg",
   width: 1280,
   height: 1280,
-  alt: "Official invitation to the TIM ATIEP book launch, listing the chief guest, guest of honour, keynote speaker, speakers, moderator and author",
+  alt: "Official invitation to the TIM ATIEP book launch, listing the chief guest, guest of honour, special guest, speakers, moderator and author",
 };
 
 /** Guests named first on the invitation, in order of precedence. */
-export const HONOURED_ROLES: SpeakerRole[] = ["chief-guest", "guest-of-honour", "keynote"];
+export const HONOURED_ROLES: SpeakerRole[] = ["chief-guest", "guest-of-honour", "special-guest"];
 
 // ─── Book ─────────────────────────────────────────────────────────────────
 
-const BOOKSTORE_PHONE = "+211929996503";
+// WhatsApp number for book orders — used for every order QR code, button and phone link.
+const ORDER_PHONE = "+211924643175";
 
 export const book: Book = {
   title: "TIM ATIEP",
@@ -223,15 +244,15 @@ export const book: Book = {
     "lone boy seeking shelter, healing and a place of rest beneath the tree.",
   themes: ["Gratitude", "Resilience", "Healing", "Mental Health", "Memory", "Becoming"],
   price: { usd: 20, ssp: 150_000 },
-  purchaseLink: `https://wa.me/${BOOKSTORE_PHONE.replace("+", "")}?text=${encodeURIComponent(
-    "Hello Ubuntu Bookstore, I would like to order a copy of TIM ATIEP - The Tree of Shade by Adut Loi Akok.",
+  purchaseLink: `https://wa.me/${ORDER_PHONE.replace("+", "")}?text=${encodeURIComponent(
+    "Hello, I would like to order a copy of TIM ATIEP - The Tree of Shade by Adut Loi Akok.",
   )}`,
   stockist: {
     name: "Ubuntu Bookstore",
     location: "Thongpiny, Juba — next to Catholic University",
-    phone: BOOKSTORE_PHONE,
-    phoneDisplay: "+211 929 996 503",
-    whatsapp: `https://wa.me/${BOOKSTORE_PHONE.replace("+", "")}`,
+    phone: ORDER_PHONE,
+    phoneDisplay: "+211 924 643 175",
+    whatsapp: `https://wa.me/${ORDER_PHONE.replace("+", "")}`,
   },
 };
 
@@ -290,32 +311,57 @@ export const authorBooks: AuthorBook[] = [
   },
 ];
 
-// ─── Speakers (from the invitation flyer, in order of appearance) ────────
-// Names follow each guest's own public spelling where it differs from the flyer.
-// Bios were checked against public sources in September 2026; Kenyatta Kozzie's
-// comes from the organisers (no public record found). Photos under speakers/flyer
-// are the organisers' full-resolution portraits for guests not in speakers/imgN.
+// ─── Speakers (in running-programme order) ──────────────────────────────
+// Names and roles from the invitation flyer and the MC running programme, with
+// the author's corrections (September 2026). Bios were checked against public
+// sources where available; others are as supplied by the organisers.
 
 export const speakers: Speaker[] = [
   {
     id: "kenyatta-kozzie",
-    name: "Kenyatta Kozzie",
-    role: "moderator",
+    name: "Kenyatt Kozzia",
+    role: "mc",
     avatar: "/images/speakers/flyer/kenyatta-kozzie.jpg",
     avatarPosition: "center 30%",
     title: "Media Personality & Host",
     bio: "A seasoned South Sudanese media personality and event host, known for moderating political and cultural forums.",
   },
   {
-    id: "adut-loi-akok",
-    name: "Adut Loi Akok",
-    role: "author",
-    avatar: "/images/gallery/IMG_5032.JPG",
-    avatarPosition: "center 18%",
-    title: "Poet & Author",
-    affiliation: "Mastercard Foundation Scholar, University of Rwanda",
-    tribute:
-      "Founder of the Dream-led Youth Fellowship, a peer support club at the University of Rwanda, and a mental health advocate.",
+    id: "john-akech",
+    name: "Prof. John Apuruot Akec",
+    role: "speaker",
+    avatar: "/images/speakers/img14.jpeg",
+    avatarPosition: "60% center",
+    title: "Vice-Chancellor",
+    affiliation: "University of Juba",
+    speechTopic: "Why We Gather: Celebrating South Sudanese Literature and the Power of Storytelling",
+    bio: "Led the University of Juba from 2014 and was reappointed Vice-Chancellor in 2025, after serving as Vice-Chancellor of the newly established University of Northern Bahr el Ghazal. An engineer with an MSc from Cardiff and a PhD from the University of Birmingham, he is a leading voice on higher-education reform.",
+  },
+  {
+    id: "athok-anguei-mayuot",
+    name: "Athok Anguei Mayuot",
+    role: "poet",
+    // Save the organisers' portrait here; initials show until it is added.
+    avatar: "/images/speakers/athok-anguei-mayuot.jpg",
+    avatarPosition: "center 10%",
+    title: "Poetess",
+    speechTopic: "Poetry Presentation I — a poem from TIM ATIEP",
+  },
+  {
+    id: "sunday-mayor",
+    name: "Tr. Sunday Mayor",
+    role: "speaker",
+    title: "Community Leadership Address",
+    speechTopic: "Community, youth, literature and supporting South Sudanese voices",
+  },
+  {
+    id: "maggie-adong",
+    name: "Maggie Adong",
+    role: "panel-moderator",
+    title: "Poet & Host, The Story Behind podcast",
+    affiliation: "Student, University of Juba",
+    speechTopic: "Literary Panel & Audience Q&A — literature, identity, youth and the meaning of Tree of Shade",
+    bio: "Using storytelling and conversations to connect people through poetry and real talk.",
   },
   {
     id: "john-gai-yoh",
@@ -325,16 +371,6 @@ export const speakers: Speaker[] = [
     title: "Founder & Chairman",
     affiliation: "South Sudan Center for Strategic and Policy Studies (CSPS)",
     bio: "Former Minister of Education, Science and Technology (2013–2016), South Sudan's first Ambassador to Turkey, and later Presidential Advisor on Education. He holds a PhD in International Politics from the University of South Africa and is the author of The Idea of South Sudan.",
-  },
-  {
-    id: "david-de-dau",
-    name: "Hon. David De Dau",
-    role: "speaker",
-    avatar: "/images/speakers/img1.jpeg",
-    avatarPosition: "center 15%",
-    title: "Executive Director",
-    affiliation: "Agency for Independent Media (AIM)",
-    bio: "A leading civil society voice for press freedom and peace, and spokesperson of the South Sudan Civil Society Alliance, known for his work in media development, community dialogue and peacebuilding.",
   },
   {
     id: "rebecca-joshua",
@@ -352,45 +388,56 @@ export const speakers: Speaker[] = [
     avatar: "/images/speakers/img5.jpeg",
     // Keeps face and cap in frame and crops the photographer's watermark (bottom right).
     avatarPosition: "center 20%",
-    title: "University of Juba",
+    title: "Professor, University of Juba",
     affiliation: "Co-founder, Likikiri Collective",
-    bio: "An educator and researcher who has lived in South Sudan since 2014. Her PhD in Comparative Literature (University of Texas at Austin) followed Kwoto, a South Sudanese popular theatre troupe, and she uses theatre and multimedia to share knowledge.",
+    bio: "Professor at the University of Juba and co-founder of Likikiri Collective, an arts and education organisation. She has lived in South Sudan since 2014; her PhD in Comparative Literature (University of Texas at Austin) followed Kwoto, a South Sudanese popular theatre troupe.",
   },
   {
-    id: "john-akech",
-    name: "Prof. John Apuruot Akec",
-    role: "speaker",
-    avatar: "/images/speakers/img14.jpeg",
-    avatarPosition: "60% center",
-    title: "Vice-Chancellor",
-    affiliation: "University of Juba",
-    bio: "Led the University of Juba from 2014 and was reappointed Vice-Chancellor in 2025, after serving as Vice-Chancellor of the newly established University of Northern Bahr el Ghazal. An engineer with an MSc from Cardiff and a PhD from the University of Birmingham, he is a leading voice on higher-education reform.",
+    id: "riak-marial-riak",
+    name: "Riak Marial Riak",
+    role: "poet",
+    title: "Poet",
+    speechTopic: "Poetry Presentation II — a poem from TIM ATIEP",
   },
   {
     id: "francis-buk",
     name: "Hon. Francis Buk",
-    role: "keynote",
+    role: "special-guest",
     avatar: "/images/speakers/img3.jpeg",
-    title: "Human Rights Advocate & Author",
-    affiliation: "Escape from Slavery (2003)",
+    title: "PMC Manager, Sipet",
+    affiliation: "Human Rights Advocate & Author of Escape from Slavery",
     bio: "Abducted into slavery as a child during Sudan's civil war, he escaped after ten years and in 2000 became the first escaped slave to testify before the US Senate Committee on Foreign Relations. His memoir and advocacy have made him an international voice for freedom and resilience.",
+  },
+  {
+    id: "adut-loi-akok",
+    name: "Adut Loi Akok",
+    role: "author",
+    avatar: "/images/gallery/IMG_5032.JPG",
+    avatarPosition: "center 18%",
+    title: "Poet & Author",
+    affiliation: "Mastercard Foundation Scholar, University of Rwanda",
+    speechTopic: "A poem, the story behind TIM ATIEP, and questions from the audience",
+    tribute:
+      "Founder of the Dream-led Youth Fellowship, a peer support club at the University of Rwanda, and a mental health advocate.",
+  },
+  {
+    id: "david-de-dau",
+    name: "Hon. David De Dau",
+    role: "guest-speaker",
+    avatar: "/images/speakers/img1.jpeg",
+    avatarPosition: "center 15%",
+    title: "Executive Director",
+    affiliation: "Agency for Independent Media (AIM)",
+    bio: "A leading civil society voice for press freedom and peace, and spokesperson of the South Sudan Civil Society Alliance, known for his work in media development, community dialogue and peacebuilding.",
   },
   {
     id: "taban-abel-guek",
     name: "Hon. Taban Abel Aguek",
     role: "guest-of-honour",
     avatar: "/images/speakers/img7.jpeg",
-    title: "Public Official & Writer",
-    bio: "A former Minister of Information who has also served as Deputy Commissioner General of the South Sudan Revenue Authority, and a long-time writer and commentator on youth, national unity and civic engagement.",
-  },
-  {
-    id: "hussein-abdelbagi-akol",
-    name: "H.E. Hussein Abdelbagi Akol",
-    role: "chief-guest",
-    avatar: "/images/speakers/flyer/hussein-abdelbagi-akol.jpg",
-    title: "Vice President of the Republic of South Sudan",
-    affiliation: "Service Cluster",
-    bio: "First appointed Vice President in 2020, he served as Minister of Agriculture and Food Security (2025–2026) before returning as Vice President for the Service Cluster in February 2026. A leader in the South Sudan Opposition Alliance (SSOA).",
+    title: "Deputy General Manager, Commercial & Services",
+    affiliation: "Greater Pioneer Operating Company (GPOC)",
+    bio: "Previously Deputy Commissioner General of the South Sudan Revenue Authority (November 2024 – September 2025). A former Minister of Information and a long-time writer and commentator on youth, national unity and civic engagement.",
   },
   {
     id: "arizona-jj",
@@ -402,7 +449,79 @@ export const speakers: Speaker[] = [
     title: "Singer & Songwriter",
     bio: "A popular South Sudanese musician who performs across South Sudan, Kenya and Uganda and has toured Australia and Egypt. His songs include “Thiëëk” and “Piondie”.",
   },
+  {
+    id: "hussein-abdelbagi-akol",
+    name: "H.E. Hussein Abdelbagi Akol",
+    role: "chief-guest",
+    avatar: "/images/speakers/flyer/hussein-abdelbagi-akol.jpg",
+    title: "Vice President of the Republic of South Sudan",
+    affiliation: "Service Cluster",
+    bio: "First appointed Vice President in 2020, he served as Minister of Agriculture and Food Security (2025–2026) before returning as Vice President for the Service Cluster in February 2026. A leader in the South Sudan Opposition Alliance (SSOA).",
+  },
 ];
+
+// ─── Programme (the MC running order) ─────────────────────────────────────
+// Times follow the running programme's clock column.
+
+export const agenda: AgendaItem[] = [
+  {
+    start: "14:00",
+    end: "14:20",
+    title: "Arrival, Registration & Book Exhibition",
+    lead: "Protocol & Registration",
+    detail: "Registration, book display, photography, sales and pre-orders, guest book, VIP reception.",
+  },
+  { start: "14:20", end: "14:25", title: "Official Opening & Welcome", speakerId: "kenyatta-kozzie" },
+  { start: "14:25", end: "14:30", title: "National Anthem & Opening Reflection", lead: "MC & Prayer Lead" },
+  {
+    start: "14:30",
+    end: "14:35",
+    title: "Welcome Remarks",
+    speakerId: "john-akech",
+    detail: "Why We Gather: Celebrating South Sudanese Literature and the Power of Storytelling",
+  },
+  { start: "14:35", end: "14:43", title: "Poetry Presentation I", speakerId: "athok-anguei-mayuot", detail: "A poem from TIM ATIEP" },
+  {
+    start: "14:43",
+    end: "14:51",
+    title: "Community Leadership Address",
+    speakerId: "sunday-mayor",
+    detail: "Community, youth, literature and supporting South Sudanese voices",
+  },
+  {
+    start: "14:51",
+    end: "15:16",
+    title: "Literary Panel & Audience Q&A",
+    speakerId: "maggie-adong",
+    detail: "Literature, identity, youth and the meaning of Tree of Shade",
+  },
+  { start: "15:16", end: "15:21", title: "Icebreaker: Who Is Your Tree of Shade?", lead: "MC" },
+  { start: "15:21", end: "15:29", title: "Poetry Presentation II", speakerId: "riak-marial-riak", detail: "A poem from TIM ATIEP" },
+  { start: "15:29", end: "15:39", title: "Special Guest Address", speakerId: "francis-buk" },
+  {
+    start: "15:39",
+    end: "15:45",
+    title: "Author's Poetry, Book Insight & Q&A",
+    speakerId: "adut-loi-akok",
+    detail: "A poem, the story behind the book, and two audience questions",
+  },
+  { start: "15:45", end: "15:54", title: "Guest Speaker Remarks", speakerId: "david-de-dau" },
+  { start: "15:54", end: "16:09", title: "Guest of Honour Address", speakerId: "taban-abel-guek" },
+  { start: "16:09", end: "16:19", title: "Musical Performance", speakerId: "arizona-jj" },
+  { start: "16:19", end: "16:34", title: "Chief Guest Address", speakerId: "hussein-abdelbagi-akol" },
+  { start: "16:34", end: "16:39", title: "Closing Prayer", lead: "Prayer Lead" },
+  {
+    start: "16:39",
+    end: "17:00",
+    title: "Book Signing, Photography & Networking",
+    lead: "Author, Protocol & MC",
+    detail: "VIP photographs first, then signing, book sales and networking.",
+  },
+];
+
+/** Who leads an agenda item, using the speaker list so names stay consistent. */
+export const agendaLead = (item: AgendaItem) =>
+  item.lead ?? speakers.find((s) => s.id === item.speakerId)?.name ?? "";
 
 // ─── Journey Milestones ───────────────────────────────────────────────────
 
@@ -718,6 +837,7 @@ export const presentationData: PresentationData = {
   author,
   authorBooks,
   speakers,
+  agenda,
   milestones,
   endorsement,
   foreword,

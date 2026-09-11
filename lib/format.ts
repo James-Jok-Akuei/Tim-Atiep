@@ -7,7 +7,7 @@ export const formatSsp = (amount: number) => `SSP ${amount.toLocaleString("en-US
 export function initials(name: string) {
   return name
     .split(/\s+/)
-    .filter(Boolean)
+    .filter((word) => word && !word.endsWith("."))
     .slice(0, 2)
     .map((word) => word[0])
     .join("")

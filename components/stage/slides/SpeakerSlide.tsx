@@ -38,10 +38,11 @@ export function SpeakerSlide({ speakers }: SpeakerSlideProps) {
 
   return (
     <Slide>
+      {/* In the flow (not overlaid) so the card always fits below, however many rows the tabs wrap to. */}
       {count > 1 && (
         <nav
           aria-label="Speakers"
-          className="relative z-20 mb-[3vh] flex w-full justify-center opacity-30 md:absolute md:inset-x-0 md:top-[3vh] md:mb-0 md:px-[4vw] transition-opacity duration-500 hover:opacity-100 has-[:focus-visible]:opacity-100"
+          className="relative z-20 mb-[3vh] flex w-full justify-center opacity-30 transition-opacity duration-500 hover:opacity-100 has-[:focus-visible]:opacity-100"
         >
           <ol className="flex flex-wrap justify-center gap-2">
             {speakers.map((s, i) => (
@@ -54,7 +55,7 @@ export function SpeakerSlide({ speakers }: SpeakerSlideProps) {
                   }}
                   aria-current={i === active ? "true" : undefined}
                   title={i < 10 ? `${s.name} — press ${keyFor(i)}` : s.name}
-                  className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+                  className={`rounded-full border px-3 py-1 text-xs transition-colors xl:text-sm ${
                     i === active
                       ? "border-tree-red bg-tree-red/15 text-tree-red-soft"
                       : "border-indigo-line text-clean-white-muted hover:border-tree-red/50 hover:text-clean-white"
@@ -81,16 +82,20 @@ export function SpeakerSlide({ speakers }: SpeakerSlideProps) {
           <motion.div variants={fadeUp} className="relative mx-auto aspect-[4/5] h-[min(62vh,75vw)]">
             <div aria-hidden className="absolute -inset-[4%] rounded-[2.5rem] bg-tree-red/15 blur-3xl" />
             <div className="relative size-full overflow-hidden rounded-[2rem] border border-tree-red/30 bg-indigo-raised">
-              <StageImage
-                src={speaker.avatar}
-                alt={`Portrait of ${speaker.name}`}
-                fill
-                sizes="(min-width: 768px) 40vw, 80vw"
-                quality={90}
-                className="object-cover"
-                style={{ objectPosition: speaker.avatarPosition }}
-                fallback={<Monogram name={speaker.name} />}
-              />
+              {speaker.avatar ? (
+                <StageImage
+                  src={speaker.avatar}
+                  alt={`Portrait of ${speaker.name}`}
+                  fill
+                  sizes="(min-width: 768px) 40vw, 80vw"
+                  quality={90}
+                  className="object-cover"
+                  style={{ objectPosition: speaker.avatarPosition }}
+                  fallback={<Monogram name={speaker.name} />}
+                />
+              ) : (
+                <Monogram name={speaker.name} />
+              )}
             </div>
           </motion.div>
 

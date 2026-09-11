@@ -5,11 +5,13 @@ import { AuthorSlide } from "@/components/stage/slides/AuthorSlide";
 import { GallerySlide } from "@/components/stage/slides/GallerySlide";
 import { InvitationSlide } from "@/components/stage/slides/InvitationSlide";
 import { PoetrySlide } from "@/components/stage/slides/PoetrySlide";
+import { ProgrammeSlide } from "@/components/stage/slides/ProgrammeSlide";
 import { PurchaseQRSlide } from "@/components/stage/slides/PurchaseQRSlide";
 import { QuoteSlide } from "@/components/stage/slides/QuoteSlide";
 import { SpeakerSlide } from "@/components/stage/slides/SpeakerSlide";
 import { WelcomeSlide } from "@/components/stage/slides/WelcomeSlide";
 import {
+  agenda,
   author,
   authorBooks,
   endorsement,
@@ -33,6 +35,7 @@ const slides: StageSlide[] = [
     title: "The Invitation",
     content: <InvitationSlide speakers={speakers} dateLabel={formatEventDate()} timeLabel={formatEventTime()} />,
   },
+  { id: "programme", title: "Programme", content: <ProgrammeSlide items={agenda} dateLabel={formatEventDate()} /> },
   { id: "author", title: "About the Author", content: <AuthorSlide author={author} /> },
   { id: "journey", title: "The Journey", content: <AuthorJourneySlide milestones={milestones} /> },
   { id: "speakers", title: "Speakers", content: <SpeakerSlide speakers={speakers} /> },

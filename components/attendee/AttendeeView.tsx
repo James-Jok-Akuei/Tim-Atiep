@@ -1,6 +1,7 @@
 import { CalendarDays, Clock, MapPin, Maximize2, MessageCircle, MonitorPlay, Phone, Trophy } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ProgrammeList } from "@/components/attendee/ProgrammeList";
 import { ScanPanel } from "@/components/attendee/ScanPanel";
 import { AmbientParticles } from "@/components/stage/AmbientParticles";
 import { BookCover } from "@/components/ui/BookCover";
@@ -15,6 +16,7 @@ import { StageImage } from "@/components/ui/StageImage";
 import {
   HONOURED_ROLES,
   SPEAKER_ROLE_LABEL,
+  agenda,
   author,
   authorBooks,
   book,
@@ -32,6 +34,7 @@ import { formatSsp } from "@/lib/format";
 
 const SECTIONS = [
   { id: "invitation", label: "Invitation" },
+  { id: "programme", label: "Programme" },
   { id: "speakers", label: "Speakers" },
   { id: "author", label: "The Author" },
   { id: "book", label: "The Book" },
@@ -165,21 +168,29 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
 
       <main className="mx-auto max-w-2xl px-5 py-14 sm:px-8 lg:grid lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-start lg:gap-12">
         <div className="flex min-w-0 flex-col gap-20">
+        <Section id="programme" eyebrow="Programme" title="Order of the day">
+          <ProgrammeList items={agenda} />
+        </Section>
+
         <Section id="speakers" eyebrow="Trees of Shade" title="Today's speakers">
           <ol className="flex flex-col gap-4">
             {speakers.map((s) => (
               <li key={s.id}>
                 <article className="flex gap-4 rounded-2xl border border-indigo-line bg-indigo-raised/60 p-4">
                   <div className="relative size-20 shrink-0 overflow-hidden rounded-xl border border-tree-red/30 bg-indigo-raised sm:size-24">
-                    <StageImage
-                      src={s.avatar}
-                      alt={`Portrait of ${s.name}`}
-                      fill
-                      sizes="96px"
-                      className="object-cover"
-                      style={{ objectPosition: s.avatarPosition }}
-                      fallback={<Monogram name={s.name} className="text-3xl" />}
-                    />
+                    {s.avatar ? (
+                      <StageImage
+                        src={s.avatar}
+                        alt={`Portrait of ${s.name}`}
+                        fill
+                        sizes="96px"
+                        className="object-cover"
+                        style={{ objectPosition: s.avatarPosition }}
+                        fallback={<Monogram name={s.name} className="text-3xl" />}
+                      />
+                    ) : (
+                      <Monogram name={s.name} className="text-3xl" />
+                    )}
                   </div>
                   <div className="flex min-w-0 flex-col gap-1">
                     <p className="text-xs uppercase tracking-[0.2em] text-tree-red-soft">{SPEAKER_ROLE_LABEL[s.role]}</p>
