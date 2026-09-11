@@ -27,6 +27,7 @@ import {
   invitation,
   milestones,
   poems,
+  siteBuilder,
   speakers,
   type ForewordBlock,
 } from "@/data/presentationData";
@@ -461,6 +462,17 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
           <MonitorPlay className="size-4" />
           Stage presentation
         </Link>
+        <p className="mt-6 border-t border-indigo-line/60 pt-5 text-xs text-clean-white-faint">
+          Website built by{" "}
+          <a
+            href={`mailto:${siteBuilder.email}`}
+            className="font-medium text-clean-white-muted underline-offset-4 transition-colors hover:text-tree-red-soft hover:underline"
+          >
+            {siteBuilder.name}
+          </a>{" "}
+          · {siteBuilder.role}
+          <span className="block">{siteBuilder.email}</span>
+        </p>
       </footer>
 
       <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden border-t border-indigo-line bg-indigo-base/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">

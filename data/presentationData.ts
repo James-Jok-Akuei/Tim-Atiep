@@ -205,6 +205,14 @@ export interface PresentationData {
   gallery: GalleryImage[];
 }
 
+// ─── Site credit ──────────────────────────────────────────────────────────
+
+export const siteBuilder = {
+  name: "James Jok Dut Akuei",
+  role: "Software Engineer",
+  email: "jokditakeerleek@gmail.com",
+};
+
 // ─── Event ────────────────────────────────────────────────────────────────
 
 export const event: EventInfo = {
