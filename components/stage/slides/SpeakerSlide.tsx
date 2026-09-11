@@ -85,11 +85,11 @@ export function SpeakerSlide({ speakers }: SpeakerSlideProps) {
               {speaker.avatar ? (
                 <StageImage
                   src={speaker.avatar}
-                  alt={`Portrait of ${speaker.name}`}
+                  alt={speaker.avatarFit === "contain" ? `${speaker.name} logo` : `Portrait of ${speaker.name}`}
                   fill
                   sizes="(min-width: 768px) 40vw, 80vw"
                   quality={90}
-                  className="object-cover"
+                  className={speaker.avatarFit === "contain" ? "bg-clean-white object-contain p-[8%]" : "object-cover"}
                   style={{ objectPosition: speaker.avatarPosition }}
                   fallback={<Monogram name={speaker.name} />}
                 />

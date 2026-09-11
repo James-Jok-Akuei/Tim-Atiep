@@ -11,6 +11,7 @@
 
 export type SpeakerRole =
   | "mc"
+  | "host"
   | "author"
   | "speaker"
   | "guest-speaker"
@@ -23,6 +24,7 @@ export type SpeakerRole =
 
 export const SPEAKER_ROLE_LABEL: Record<SpeakerRole, string> = {
   mc: "Master of Ceremonies",
+  host: "Host of the Launch",
   author: "The Author",
   speaker: "Speaker",
   "guest-speaker": "Guest Speaker",
@@ -42,6 +44,8 @@ export interface Speaker {
   avatar?: string;
   /** CSS object-position for the portrait crop, e.g. "center 25%". */
   avatarPosition?: string;
+  /** "contain" shows the whole image on a light panel — for logos rather than portraits. */
+  avatarFit?: "contain";
   title?: string;
   affiliation?: string;
   speechTopic?: string;
@@ -179,6 +183,8 @@ export interface EventInfo {
   name: string;
   venue: string;
   city: string;
+  /** Organisation hosting the launch. */
+  host?: string;
   /** ISO 8601 with Juba offset (CAT, UTC+2). */
   startsAt: string;
   endsAt: string;
@@ -205,6 +211,7 @@ export const event: EventInfo = {
   name: "Official Book Launch",
   venue: "Unipod Hall, University of Juba",
   city: "Juba, South Sudan",
+  host: "Education Needs All",
   startsAt: "2026-09-12T14:00:00+02:00",
   endsAt: "2026-09-12T17:00:00+02:00",
   timezone: "Africa/Juba",
@@ -327,6 +334,15 @@ export const speakers: Speaker[] = [
     bio: "A seasoned South Sudanese media personality and event host, known for moderating political and cultural forums.",
   },
   {
+    id: "education-needs-all",
+    name: "Education Needs All (ENA)",
+    role: "host",
+    avatar: "/images/speakers/ENA.jpeg",
+    avatarFit: "contain",
+    title: "Host of the TIM ATIEP Book Launch",
+    speechTopic: "Presentation by the host organisation",
+  },
+  {
     id: "john-akech",
     name: "Prof. John Apuruot Akec",
     role: "speaker",
@@ -365,6 +381,16 @@ export const speakers: Speaker[] = [
     affiliation: "Student, University of Juba",
     speechTopic: "Literary Panel & Audience Q&A — literature, identity, youth and the meaning of Tree of Shade",
     bio: "Using storytelling and conversations to connect people through poetry and real talk.",
+  },
+  {
+    id: "alith-cyer-mayar",
+    name: "Alith Cyer Mayar",
+    role: "speaker",
+    avatar: "/images/speakers/alithcyermayar.jpeg",
+    avatarPosition: "center 25%",
+    title: "Author, Poet & Activist",
+    affiliation: "Founder, Writers Writing Fellowship – South Sudan",
+    bio: "Author of The Cry of the South Sudanese Children and The Battle Within Me. She founded the Writers Writing Fellowship – South Sudan, a youth-led writing collective in Juba, and co-led the Write for Peace workshops that helped young South Sudanese write against prejudice and division.",
   },
   {
     id: "john-gai-yoh",

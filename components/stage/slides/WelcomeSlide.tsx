@@ -27,7 +27,10 @@ export function WelcomeSlide({ dateLabel, timeLabel }: WelcomeSlideProps) {
         className="relative z-10 flex flex-col items-center gap-[1.8vh] text-center"
       >
         <motion.div variants={fadeUp}>
-          <Eyebrow>{event.name}</Eyebrow>
+          <Eyebrow>
+            {event.name}
+            {event.host && ` · Hosted by ${event.host}`}
+          </Eyebrow>
         </motion.div>
 
         <motion.h1

@@ -76,7 +76,10 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
         <AmbientParticles />
         <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto] lg:px-8">
         <div className="flex flex-col items-center gap-4 lg:items-start lg:text-left">
-          <Eyebrow>{event.name}</Eyebrow>
+          <Eyebrow>
+            {event.name}
+            {event.host && ` · Hosted by ${event.host}`}
+          </Eyebrow>
           <h1 className="font-display text-[clamp(3.5rem,17vw,7rem)] font-bold leading-none tracking-tight text-cover-title">
             {book.title}
           </h1>
@@ -181,10 +184,10 @@ export function AttendeeView({ dateLabel, timeLabel }: AttendeeViewProps) {
                     {s.avatar ? (
                       <StageImage
                         src={s.avatar}
-                        alt={`Portrait of ${s.name}`}
+                        alt={s.avatarFit === "contain" ? `${s.name} logo` : `Portrait of ${s.name}`}
                         fill
                         sizes="96px"
-                        className="object-cover"
+                        className={s.avatarFit === "contain" ? "bg-clean-white object-contain p-[6%]" : "object-cover"}
                         style={{ objectPosition: s.avatarPosition }}
                         fallback={<Monogram name={s.name} className="text-3xl" />}
                       />
